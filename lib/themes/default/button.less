@@ -1,0 +1,196 @@
+@import (multiple) 'common/mixins.less';
+@import (multiple) 'default/common.less';
+
+@font_weight : bold;
+@text_color : #333;
+@text_color_hover : @text_color + 50%;
+
+@focus_color : @el_focus_color;
+@border_color : @el_border_color;
+
+@bg_color : #eee;
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+  box-sizing: border-box;
+  position: relative;
+  contain: content;
+
+  margin: 0 0.25em 0 0;
+  padding: 0.4em 1.5em;
+  outline: none;
+  border: 1px solid;
+  min-width: 20px;
+
+  border-color: @el_border_color;
+  background: @bg_color;
+
+  font-weight: @font_weight;
+  font-family: @page_font;
+  line-height: @line_height;
+
+  overflow: hidden;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  cursor: pointer;
+  color: @text_color;
+}
+
+:host(:last-child) {
+  margin-right: 0;
+}
+
+:host(:hover) {
+  color: @text_color_hover;
+}
+
+:host([focused]) {
+  border-color: @focus_color;
+}
+
+:host([pressed]) {
+  color: @text_color - 100%;
+  background: @bg_color - 100%;
+}
+
+:host([unnavigable]) {
+  border-color: @el_border_color;
+}
+
+:host([is-disabled]) {
+  pointer-events: none;
+
+  border-color: @el_border_color + 100%;
+  color: @text_color + 100%;
+  background: @bg_color - 20%;
+}
+
+/*-------------------
+        Size
+--------------------*/
+
+// NOTE: we need to explicit the height, otherwise button will be stretch in flex wrapper
+
+:host(.mini) {
+  font-size: @mini;
+  height: 18px;
+}
+
+:host(.tiny) {
+  font-size: @tiny;
+  height: 22px;
+}
+
+:host(.small) {
+  font-size: @small;
+  height: 24px;
+}
+
+:host {
+  font-size: @medium;
+  height: 26px;
+}
+
+:host(.large) {
+  font-size: @large;
+  height: 29px;
+}
+
+:host(.big) {
+  font-size: @big;
+  height: 33px;
+}
+
+:host(.huge) {
+  font-size: @huge;
+  height: 36px;
+}
+
+:host(.massive) {
+  font-size: @massive;
+  height: 44px;
+}
+
+/*-------------------
+  Colored
+--------------------*/
+
+.color(@clr, @text_color, @bg_color) {
+  @text_color_hover: @text_color + 20%;
+
+  :host(.@{clr}) {
+    color: @text_color;
+    background: @bg_color;
+  }
+  :host(.@{clr}:hover) {
+    color: @text_color_hover;
+  }
+  :host(.@{clr}[pressed]) {
+    color: @text_color - 50%;
+    background: @bg_color - 20%;
+  }
+  :host(.@{clr}[disabled]) {
+    color: rgba(255, 255, 255, 0.25);
+  }
+}
+
+.color(red, #fff, @red);
+.color(green, #fff, @green);
+.color(blue, #fff, @blue);
+
+/*-------------------
+  Transparent
+--------------------*/
+
+:host(.transparent) {
+  background: none;
+  border: 0;
+  padding: 0.4em 0.6em;
+}
+:host(.transparent:hover) {
+  color: @text_color;
+  background: @bg_color - 20%;
+}
+:host(.transparent[focused]) {
+  color: @text_color_hover;
+}
+:host(.transparent[pressed]) {
+  color: @text_color - 50%;
+  background: @bg_color - 50%;
+}
+:host(.transparent[disabled]) {
+  opacity: 0.25;
+  background: none;
+}
+
+.transparent_color(@clr, @text_color) {
+  @text_color_hover: @text_color + 50%;
+
+  :host(.transparent.@{clr}) {
+    color: @text_color;
+  }
+  :host(.transparent.@{clr}:hover) {
+    color: @text_color_hover;
+    background: @text_color - 50%;
+  }
+  :host(.transparent.@{clr}[focused]) {
+    color: @text_color_hover;
+  }
+  :host(.transparent.@{clr}[pressed]) {
+    color: @text_color - 50%;
+    background: @text_color - 100%;
+  }
+  :host(.transparent.@{clr}[disabled]) {
+    opacity: 0.25;
+  }
+}
+
+.transparent_color(red, @red + 50%);
+.transparent_color(green, @green + 50%);
+.transparent_color(blue, @blue + 50%);

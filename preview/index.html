@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Panel Example</title>
+    <link rel="stylesheet" href="theme://global.css">
+    <link rel="stylesheet" href="theme://layout.css">
+    <style>
+      body {
+        font-family: Helvetica, sans-serif;
+        position: absolute;
+        top: 0; bottom: 0; left: 0; right: 0;
+        margin: 0;
+      }
+
+      h2 {
+        color: #09f;
+        margin: auto;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .toolbar {
+        padding: 10px;
+      }
+
+      #view {
+        flex: 1;
+
+        padding: 10px;
+        padding-top: 0px;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      div.section {
+        border-bottom: 1px solid #666;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+      }
+
+      div.section:last-child {
+        border-bottom: 0px;
+        padding-bottom: 0px;
+        margin-bottom: 0px;
+      }
+
+      div.group {
+        min-width: 420px;
+        margin-bottom: 5px;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      span {
+        margin-right: 0.25em;
+      }
+    </style>
+  </head>
+
+  <body class="layout vertical">
+    <h2>UI Kit Preview</h2>
+    <div class="toolbar layout horizontal center">
+      <select id="select">
+        <option value="settings">settings</option>
+
+        <optgroup label="Controls">
+          <option value="button-preview">ui-button</option>
+          <option value="checkbox-preview">ui-checkbox</option>
+          <option value="color-preview">ui-color</option>
+          <option value="color-picker-preview">ui-color-picker</option>
+          <option value="input-preview">ui-input</option>
+          <option value="num-input-preview">ui-num-input</option>
+          <option value="select-preview">ui-select</option>
+          <option value="slider-preview">ui-slider</option>
+          <option value="text-area-preview">ui-text-area</option>
+        </optgroup>
+
+        <optgroup label="Containers">
+          <option value="box-container-preview">ui-box-container</option>
+          <option value="drop-area-preview">ui-drop-area</option>
+          <option value="prop-preview">ui-prop</option>
+          <option value="prop-table-preview">ui-prop-table</option>
+          <option value="section-preview">ui-section</option>
+          <option value="shadow-preview">ui-shadow</option>
+          <option value="splitter-preview">ui-splitter</option>
+        </optgroup>
+
+        <optgroup label="Views">
+          <option value="hint-preview">ui-hint</option>
+          <option value="loader-preview">ui-loader</option>
+          <option value="markdown-preview">ui-markdown</option>
+          <option value="progress-preview">ui-progress</option>
+          <option value="webview-preview">ui-webview</option>
+        </optgroup>
+
+        <optgroup label="Misc">
+          <option value="icon-preview">icons</option>
+          <option value="layout-preview">layout</option>
+        </optgroup>
+      </select>
+    </div>
+    <div id="view" class="scroll"></div>
+
+    <script>
+      const profile = require('electron-profile');
+      const fs = require('fs');
+      const uikit = require('../index');
+
+      require('electron-quick-inspect');
+
+      let selectEL = document.getElementById('select');
+      let viewEL = document.getElementById('view');
+      let settings = null;
+
+      function showPreview(value, scrollTop) {
+        let html = fs.readFileSync(`${__dirname}/elements/${value}.html`);
+        viewEL.innerHTML = html;
+
+        let init = require(`${__dirname}/elements/${value}.js`);
+        init();
+
+        setTimeout(() => {
+          viewEL.scrollTop = scrollTop;
+        }, 10);
+      }
+
+      profile.load('profile://local/settings.json', (err, p) => {
+        settings = p;
+
+        selectEL.addEventListener('change', event => {
+          event.stopPropagation();
+
+          settings.data.scrollTop = 0;
+          settings.data.select = selectEL.value;
+          settings.save();
+
+          showPreview(selectEL.value, 0);
+        });
+
+        selectEL.value = settings.data.select;
+        showPreview(settings.data.select, settings.data.scrollTop);
+      });
+
+      window.onbeforeunload = function () {
+        if (settings) {
+          settings.data.scrollTop = viewEL.scrollTop;
+          settings.save();
+        }
+      }
+    </script>
+  </body>
+</html>
