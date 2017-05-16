@@ -1,0 +1,126 @@
+@import (multiple) 'common/mixins.less';
+@import (multiple) 'default/common.less';
+
+@import url('theme://fontello.css');
+
+@text_color : #bdbdbd;
+@text_color_hover : @text_color + 20%;
+
+@focus_color : @el_focus_color;
+
+@box_color: #888;
+@box_color_hover: @box_color + 50%;
+@box_bg_color : #eee;
+@box_size : 15px;
+
+@checker_size: 12px;
+@checker_color: @page_text_primary_color;
+
+@lock_size: 10px;
+@lock_color: @box_color + 50%;
+
+@label_offset : 5px;
+
+:host {
+  display: inline-block;
+  position: relative;
+  contain: content;
+
+  flex: none;
+  outline: none;
+
+  margin: 0 0.25em 0 0;
+  font-size: @medium;
+
+  white-space: nowrap;
+  line-height: @box_size;
+
+  cursor: pointer;
+  color: @text_color;
+}
+
+:host(:last-child) {
+  margin-right: 0;
+}
+
+.box {
+  position: relative;
+
+  display: inline-block;
+  box-sizing: border-box;
+  vertical-align: middle;
+
+  width: @box_size;
+  height: @box_size;
+  min-width: @box_size;
+  min-height: @box_size;
+
+  border: 1px solid @box_color;
+
+  background: @box_bg_color;
+  cursor: pointer;
+}
+
+.checker {
+  position: absolute;
+  top: 0px;
+  left: -2px;
+
+  font-size: @checker_size;
+  width: @checker_size;
+  height: @checker_size;
+
+  visibility: hidden;
+  color: @checker_color;
+}
+
+.label {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+:host([checked]) {
+  .checker {
+    visibility: visible;
+  }
+}
+
+:host(:hover) {
+  color: @text_color_hover;
+
+  .box {
+    border-color: @box_color_hover;
+  }
+}
+
+:host([focused]) {
+  color: @focus_color;
+
+  .box {
+    border-color: @focus_color;
+  }
+}
+
+:host([pressed]) {
+  .box {
+    border-color: @focus_color - 50%;
+  }
+
+  .checker {
+    opacity: 0.5;
+  }
+}
+
+:host([is-disabled]) {
+  pointer-events: none;
+  color: @text_color - 90%;
+
+  .checker {
+    color: @text_color - 90%;
+  }
+
+  .box {
+    border-color: @box_color - 50%;
+    background: @box_bg_color + 20%;
+  }
+}
