@@ -115,14 +115,31 @@
 
       let selectEL = document.getElementById('select');
       let viewEL = document.getElementById('view');
+
       let settings = null;
+      let timeoutID = 0;
+      let events = [];
+
+      viewEL.updateEventText = function (eventEL, name) {
+        clearTimeout(timeoutID);
+
+        if (events.length >= 5) {
+          events.pop();
+        }
+        events.push(name);
+        eventEL.innerHTML = `event: ${events.join(',')}`;
+
+        timeoutID = setTimeout(() => {
+          eventEL.innerHTML = 'event: ---';
+          events = [];
+        }, 200);
+      }
 
       function showPreview(value, scrollTop) {
-        let html = fs.readFileSync(`${__dirname}/elements/${value}.html`);
-        viewEL.innerHTML = html;
+        viewEL.innerHTML = fs.readFileSync(`${__dirname}/elements/${value}.html`);
 
         let init = require(`${__dirname}/elements/${value}.js`);
-        init();
+        init(viewEL);
 
         setTimeout(() => {
           viewEL.scrollTop = scrollTop;
@@ -146,7 +163,7 @@
         showPreview(settings.data.select, settings.data.scrollTop);
       });
 
-      window.onbeforeunload = function () {
+      window.onbeforeunload = function() {
         if (settings) {
           settings.data.scrollTop = viewEL.scrollTop;
           settings.save();

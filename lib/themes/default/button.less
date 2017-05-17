@@ -2,18 +2,24 @@
 @import (multiple) 'default/common.less';
 
 @font_weight : bold;
-@text_color : #333;
-@text_color_hover : @text_color + 50%;
 
-@focus_color : @el_focus_color;
+@text_color : @page_text_color;
+@text_color_hover : @text_color + 50%;
+@text_color_pressed : @text_color - 100%;
+@text_color_disabled : @text_color + 100%;
+
 @border_color : @el_border_color;
+@border_color_focus : @el_focus_color;
+@border_color_disabled : @el_border_color + 100%;
 
 @bg_color : #eee;
+@bg_color_pressed : @bg_color - 100%;
+@bg_color_disabled : @bg_color - 20%;
 
 :host {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  .layout-horizontal();
+  .layout-children(center, center);
+
   flex: none;
   box-sizing: border-box;
   position: relative;
@@ -51,12 +57,12 @@
 }
 
 :host([focused]) {
-  border-color: @focus_color;
+  border-color: @border_color_focus;
 }
 
 :host([pressed]) {
-  color: @text_color - 100%;
-  background: @bg_color - 100%;
+  color: @text_color_pressed;
+  background: @bg_color_pressed;
 }
 
 :host([unnavigable]) {
@@ -66,9 +72,9 @@
 :host([is-disabled]) {
   pointer-events: none;
 
-  border-color: @el_border_color + 100%;
-  color: @text_color + 100%;
-  background: @bg_color - 20%;
+  border-color: @border_color_disabled;
+  color: @text_color_disabled;
+  background: @bg_color_disabled;
 }
 
 /*-------------------

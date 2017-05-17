@@ -3,31 +3,33 @@
 
 @import url('theme://fontello.css');
 
-@text_color : #bdbdbd;
-@text_color_hover : @text_color + 20%;
-
 @focus_color : @el_focus_color;
 
-@box_color: #888;
-@box_color_hover: @box_color + 50%;
-@box_bg_color : #eee;
-@box_size : 15px;
+@text_color : @page_text_color;
+@text_color_hover : @text_color + 50%;
+@text_color_disabled : @text_color + 100%;
 
-@checker_size: 12px;
+@box_color: @el_border_color;
+@box_color_hover: @box_color + 50%;
+@box_color_disabled : @box_color + 100%;
+
+@box_bg_color : #eee;
+@box_bg_color_disabled : @box_bg_color - 20%;
+@box_bg_color_pressed : @focus_color - 50%;
+
 @checker_color: @page_text_primary_color;
 
-@lock_size: 10px;
-@lock_color: @box_color + 50%;
-
-@label_offset : 5px;
+@box_size : 15px;
+@checker_size: 12px;
 
 :host {
-  display: inline-block;
-  position: relative;
-  contain: content;
+  .layout-horizontal();
+  .layout-children(center, start);
 
   flex: none;
   outline: none;
+  position: relative;
+  contain: content;
 
   margin: 0 0.25em 0 0;
   font-size: @medium;
@@ -49,6 +51,8 @@
   display: inline-block;
   box-sizing: border-box;
   vertical-align: middle;
+
+  margin-right: 0.25em;
 
   width: @box_size;
   height: @box_size;
@@ -72,11 +76,6 @@
 
   visibility: hidden;
   color: @checker_color;
-}
-
-.label {
-  cursor: pointer;
-  vertical-align: middle;
 }
 
 :host([checked]) {
@@ -103,7 +102,7 @@
 
 :host([pressed]) {
   .box {
-    border-color: @focus_color - 50%;
+    border-color: @box_bg_color_pressed;
   }
 
   .checker {
@@ -113,14 +112,14 @@
 
 :host([is-disabled]) {
   pointer-events: none;
-  color: @text_color - 90%;
+  color: @text_color_disabled;
 
   .checker {
-    color: @text_color - 90%;
+    color: @text_color_disabled;
   }
 
   .box {
-    border-color: @box_color - 50%;
-    background: @box_bg_color + 20%;
+    border-color: @box_color_disabled;
+    background: @box_bg_color_disabled;
   }
 }
