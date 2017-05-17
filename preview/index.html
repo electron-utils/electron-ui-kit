@@ -138,10 +138,10 @@
       function showPreview(value, scrollTop) {
         viewEL.innerHTML = fs.readFileSync(`${__dirname}/elements/${value}.html`);
 
-        let init = require(`${__dirname}/elements/${value}.js`);
-        init(viewEL);
-
         setTimeout(() => {
+          let init = require(`${__dirname}/elements/${value}.js`);
+          init(viewEL);
+
           viewEL.scrollTop = scrollTop;
         }, 10);
       }
