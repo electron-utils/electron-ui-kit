@@ -103,6 +103,10 @@
           <option value="layout-preview">layout</option>
         </optgroup>
       </select>
+      <div class="flex-1"></div>
+      <div>
+        <input type="checkbox" id="useFocusMgr"></input>Use Focus Manager
+      </div>
     </div>
     <div id="view" class="scroll"></div>
 
@@ -115,6 +119,9 @@
 
       let selectEL = document.getElementById('select');
       let viewEL = document.getElementById('view');
+      let checkboxEL = document.getElementById('useFocusMgr');
+
+      let focusMgr = new uikit.FocusMgr(viewEL);
 
       let settings = null;
       let timeoutID = 0;
@@ -159,7 +166,16 @@
           showPreview(selectEL.value, 0);
         });
 
+        checkboxEL.addEventListener('click', event => {
+          settings.data.useFocusMgr = checkboxEL.checked;
+          focusMgr.disabled = !checkboxEL.checked;
+          settings.save();
+        });
+
         selectEL.value = settings.data.select;
+        checkboxEL.checked = settings.data.useFocusMgr;
+
+        focusMgr.disabled = !checkboxEL.checked;
         showPreview(settings.data.select, settings.data.scrollTop);
       });
 
