@@ -123,7 +123,6 @@
 
       let focusMgr = new uikit.FocusMgr(viewEL);
 
-      let settings = null;
       let timeoutID = 0;
       let events = [];
 
@@ -143,6 +142,11 @@
       }
 
       function showPreview(value, scrollTop) {
+        if (!fs.existsSync(`${__dirname}/elements/${value}.html`)) {
+          viewEL.innerHTML = '';
+          return;
+        }
+
         viewEL.innerHTML = fs.readFileSync(`${__dirname}/elements/${value}.html`);
 
         setTimeout(() => {
@@ -153,35 +157,32 @@
         }, 10);
       }
 
-      profile.load('profile://local/settings.json', (err, p) => {
-        settings = p;
+      let settings = profile.load('profile://local/settings.json');
+      selectEL.addEventListener('change', event => {
+        event.stopPropagation();
 
-        selectEL.addEventListener('change', event => {
-          event.stopPropagation();
+        settings.set('scrollTop', 0);
+        settings.set('select', selectEL.value);
+        settings.save();
 
-          settings.data.scrollTop = 0;
-          settings.data.select = selectEL.value;
-          settings.save();
-
-          showPreview(selectEL.value, 0);
-        });
-
-        checkboxEL.addEventListener('click', event => {
-          settings.data.useFocusMgr = checkboxEL.checked;
-          focusMgr.disabled = !checkboxEL.checked;
-          settings.save();
-        });
-
-        selectEL.value = settings.data.select;
-        checkboxEL.checked = settings.data.useFocusMgr;
-
-        focusMgr.disabled = !checkboxEL.checked;
-        showPreview(settings.data.select, settings.data.scrollTop);
+        showPreview(selectEL.value, 0);
       });
+
+      checkboxEL.addEventListener('click', event => {
+        settings.set('useFocusMgr', checkboxEL.checked);
+        focusMgr.disabled = !checkboxEL.checked;
+        settings.save();
+      });
+
+      selectEL.value = settings.get('select');
+      checkboxEL.checked = settings.get('useFocusMgr');
+
+      focusMgr.disabled = !checkboxEL.checked;
+      showPreview(settings.get('select'), settings.get('scrollTop'));
 
       window.onbeforeunload = function() {
         if (settings) {
-          settings.data.scrollTop = viewEL.scrollTop;
+          settings.set('scrollTop', viewEL.scrollTop);
           settings.save();
         }
       }
