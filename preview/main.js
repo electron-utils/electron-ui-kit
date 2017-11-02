@@ -8,7 +8,6 @@ const uikit = require('../index');
 
 app.on('ready', function () {
   uikit.setTheme(`${__dirname}/../bin/themes/default`);
-  profile.load('profile://local/settings.json');
 
   if (!windowPlus.restore()) {
     let win = new BrowserWindow({
