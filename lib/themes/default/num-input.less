@@ -17,170 +17,130 @@
 @select_color : @page_select_color;
 
 :host {
-    position: relative;
-    box-sizing: border-box;
-    contain: content;
-    border: 1px solid @border_color;
-    background: @bg_color;
-  
-    width: auto;
-    margin: 0 0.25em 0 0;
+  position: relative;
+  box-sizing: border-box;
+  contain: content;
+  border: 1px solid @border_color;
+  background: @bg_color;
+
+  width: auto;
+  margin: 0 0.25em 0 0;
+  outline: none;
+
+  cursor: default;
+
+  input {
+    font-size: 1rem;
+    font-family: @page_font;
+    border: 0;
+    margin: 0;
+    padding: 0.2em 1.2em 0.2em 0.6em;
+    width: 100%;
+    display: inline-block;
     outline: none;
-  
-    cursor: default;
+    box-sizing: border-box;
+    background: @bg_color;
+    color: @text_color;
 
-    input {
-        font-size: 1rem;
-        font-family: @page_font;
-        border: 0;
-        margin: 0;
-        padding: 0.2em 1.2em 0.2em 0.6em;
-        width: 100%;
-        display: inline-block;
-        outline: none;
-        box-sizing: border-box;
-        background: @bg_color;
-        color: @text_color;
-
-        &::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-        }
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
     }
+  }
 
 
-    .spin-wrapper {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 1em;
-        height: 100%;
-        overflow: hidden;
-        background: #ccc;
+  .spin-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1em;
+    height: 100%;
+    overflow: hidden;
+    background: #ccc;
+    font-size: 0.8em;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    outline: 0;
+    box-sizing: border-box;
+
+    & > div {
+      flex: 1;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      line-height: 0.8em;
+
+      i {
+        display: block;
+        justify-content: center;
+        text-align: center;
         font-size: 0.8em;
-
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        outline: 0;
-        box-sizing: border-box;
-
-        & > div {
-            flex: 1;
-            justify-content: center;
-            text-align: center;
-            cursor: pointer;
-
-            i {
-                font-size: 0.8em;
-
-                &:before {
-                    line-height: 100%;
-                }
-            }
-        }
-
-        .up {
-            top: 0;
-        }
-
-        .down {
-            bottom: 0;
-        }
+      }
     }
+  }
 }
 
 
 :host([focused]) {
-    border-color: @focus_color;
+  border-color: @focus_color;
 }
 
 :host([is-disabled]) {
-    pointer-events: none;
-    border-color: @border_color - 50%;
-  
-    input {
-        color: @text_color_disable;
-        background: @bg_color + 20%;
-    }
+  pointer-events: none;
+  border-color: @border_color - 50%;
+
+  input {
+    color: @text_color_disable;
+    background: @bg_color + 20%;
+  }
 }
 
 :host(.mini) {
-    input {
-        font-size: @mini;
-    }
-
-    .spin-wrapper {
-        line-height: @mini * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @mini;
+  }
 }
 
 :host(.tiny) {
-    input {
-        font-size: @tiny;
-    }
-
-    .spin-wrapper {
-        line-height: @tiny * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @tiny;
+  }
 }
 
 :host(.small) {
-    input {
-        font-size: @small;
-    }
-
-    .spin-wrapper {
-        line-height: @small * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @small;
+  }
 }
 
 :host {
-    input {
-        font-size: @medium;
-    }
-
-    .spin-wrapper {
-        line-height: @medium * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @medium;
+  }
 }
 
 :host(.large) {
-    input {
-        font-size: @large;
-    }
-
-    .spin-wrapper {
-        line-height: @large * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @large;
+  }
 }
 
 :host(.big) {
-    input {
-        font-size: @big;
-    }
-
-    .spin-wrapper {
-        line-height: @big * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @big;
+  }
 }
 
 :host(.huge) {
-    input {
-        font-size: @huge;
-    }
-
-    .spin-wrapper {
-        line-height: @huge * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @huge;
+  }
 }
 
 :host(.massive) {
-    input {
-        font-size: @massive;
-    }
-
-    .spin-wrapper {
-        line-height: @massive * 0.8;
-    }
+  .spin-wrapper, input {
+    font-size: @massive;
+  }
 }
